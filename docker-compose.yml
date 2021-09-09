@@ -7,3 +7,27 @@ services:
       target: dev
     ports:
       - "8000:8000"
+  db:
+    image: postgres:13.4
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+      - ./create_tables.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=pguser
+      - POSTGRES_PASSWORD=pgpassword
+      - POSTGRES_DB=docbrowse-db
+  pgadmin:
+    image: dpage/pgadmin4:5.7
+    ports:
+      - "8050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=adminpassword
+      - PGADMIN_CONFIG_CONSOLE_LOG_LEVEL=50
+      - PGADMIN_CONFIG_FILE_LOG_LEVEL=50
+      - PGADMIN_CONFIG_SERVER_MODE=False
+      - PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED=False
+volumes:
+  db_data:
