@@ -18,4 +18,4 @@ COPY app ./app
 
 FROM base as dev
 
-CMD bash -c 'uvicorn app.app:app --host 0.0.0.0'
+CMD bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; uvicorn app.app:app --host 0.0.0.0'
